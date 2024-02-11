@@ -58,6 +58,7 @@ class ChatGPT:
         verbose: bool = False,
         headless: bool = False,
         chrome_args: list = [],
+        plugin: str = "",
     ) -> None:
         self._session_token = session_token
         self._conversation_id = conversation_id
@@ -67,6 +68,7 @@ class ChatGPT:
         self._chrome_args = chrome_args or []
         self._seen_onboarding = False
         self._history_and_training_enabled = True
+        self._plugin = plugin
         self._init_logger(verbose)
 
         if self._proxy and not re.findall(
@@ -188,7 +190,10 @@ class ChatGPT:
         self._ensure_cf()
 
         self.logger.debug("Opening chat page...")
-        self.driver.get(f"{CGPTV.chat_url}/{self._conversation_id}")
+        if self._plugin:
+            self.driver.get(f"https://chat.openai.com/{self._plugin}")
+        else:
+            self.driver.get(f"{CGPTV.chat_url}/{self._conversation_id}")
         self._check_blocking_elements()
 
         self._is_active = True
@@ -861,7 +866,10 @@ class ChatGPT:
         self.logger.debug("Authorization is valid")
 
         self.logger.debug("Opening chat page...")
-        self.driver.get(f"{CGPTV.chat_url}/{self._conversation_id}")
+        if self._plugin:
+            self.driver.get(f"https://chat.openai.com/{self._plugin}")
+        else:
+            self.driver.get(f"{CGPTV.chat_url}/{self._conversation_id}")
         self.logger.debug("Opened chat page")
         self._check_blocking_elements(ignore_conversation_alert=True)
         self.logger.debug("Switched account")
