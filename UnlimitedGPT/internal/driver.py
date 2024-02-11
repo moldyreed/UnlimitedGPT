@@ -10,10 +10,9 @@ class ChatGPTDriver(uc.Chrome):
     """
 
     def __init__(self, options: uc.ChromeOptions, headless: bool = False):
-        caps = DesiredCapabilities.CHROME
-        caps['goog:loggingPrefs'] = {'performance': 'ALL'}
-        
-        super().__init__(options=options, headless=headless, desired_capabilities=caps)
+        options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
+
+        super().__init__(options=options, headless=headless)
 
     def safe_click(self, mark, timeout: int = 10) -> bool:
         """
