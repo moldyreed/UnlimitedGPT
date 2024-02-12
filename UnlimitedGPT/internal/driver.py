@@ -12,7 +12,7 @@ class ChatGPTDriver(uc.Chrome):
     def __init__(self, options: uc.ChromeOptions, headless: bool = False):
         options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
 
-        super().__init__(options=options, headless=headless)
+        super().__init__(options=options, headless=headless, driver_executable_path='/usr/local/bin/chromedriver')
 
     def safe_click(self, mark, timeout: int = 10) -> bool:
         """
